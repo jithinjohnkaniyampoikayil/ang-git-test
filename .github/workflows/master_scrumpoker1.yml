@@ -25,6 +25,7 @@ jobs:
         run: |
           npm install
           npm run build --if-present
+          ng build --prod
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -59,6 +60,9 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E4B30F8665874BAC9C632E933A7DD95E }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5DD5F98351CA4C1D840716721EFABE9A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3C6E5AFE7CBA4A46AE9B4E534F250412 }}
+
+      - name: Clean up previous deployment
+        run: az webapp deployment source config-zip --resource-group DefaultResourceGroup-PAR --name scrumpoker1 --src /dev/null
 
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
